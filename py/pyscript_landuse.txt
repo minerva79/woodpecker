@@ -1,0 +1,79 @@
+http://resources.arcgis.com/en/help/main/10.1/index.html#//005p0000003q000000
+
+# Calculate AREA values
+ 
+# Import system modules
+import arcpy
+ 
+# Local variables...
+workspace = "C:/data"
+input = "tracts.shp"
+calculate_output = "tracts_with_area_field.shp"
+ 
+try:
+    # Set the current workspace (to avoid having to specify the full path to the feature classes each time)
+    arcpy.env.workspace = workspace
+ 
+    # Process: Calculate Areas...
+    arcpy.CalculateAreas_stats(input, calculate_output)
+ 
+except:
+    # If an error occurred when running the tool, print out the error message.
+    print arcpy.GetMessages()
+
+
+http://gis.stackexchange.com/questions/8970
+
+import processing
+processing.alglist("merge")6/how-to-merge-shape-files-with-attributes-from-a-python-script-in-qgis
+processing.alghelp("qgis:mergevectorlayers")
+processing.runalg("qgis:mergevectorlayers", layer1, layer2,"outputfilename.shp")
+old_attribute_List = input_layer.dataProvider().fields().toList()
+new_attribute_List=[]
+for attrib in old_attribute_List:
+  if destination_layer.fieldNameIndex(attrib.name())==-1:
+    new_attribute_List.append(QgsField(attrib.name(),attrib.type()))
+destination_layer_data_provider.addAttributes(new_attribute_List)
+destination_layer.updateFields()
+destination_layer.startEditing()
+cfeature = QgsFeature()
+cfeatures=[]
+xfeatures = input_layer.getFeatures()
+for xfeature in xfeatures:
+    xgeometry = xfeature.geometry()
+    #GEOMETRY TRANSFORM GOES HERE IF DESTINATION CRS DIFFERS FROM INPUT CRS
+    cfeature_Attributes=[]
+    cfeature_Attributes.extend(xfeature.attributes())
+    cfeature.setGeometry(xgeometry)
+    cfeature.setAttributes(cfeature_Attributes)
+    cfeatures.append(cfeature)
+destination_layer_data_provider.addFeatures(cfeatures)
+destination_layer_data_provider.commitChanges()
+
+
+http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Union/00080000000s000000/
+
+# unions.py
+# Purpose: union 3 feature classes
+# Author: ESRI
+
+# Import the system modules
+import arcpy
+from arcpy import env
+ 
+# Set the current workspace 
+# (to avoid having to specify the full path to the feature classes each time)
+env.workspace = "c:/data/data.gdb"
+ 
+
+# Union 3 feature classes but only carry the FID attributes to the output
+inFeatures = ["well_buff50", "stream_buff200", "waterbody_buff500"]
+outFeatures = "water_buffers"
+clusterTol = 0.0003
+arcpy.Union_analysis (inFeatures, outFeatures, "ONLY_FID", clusterTol)
+
+# Union 3 other feature classes, but specify some ranks for each 
+# since parcels has better spatial accuracy
+inFeatures = [["counties", 2],["parcels", 1],["state", 2]]
+outFeatures = "state_landinfo" 
+arcpy.Union_analysis (inFeatures, outFeatures)

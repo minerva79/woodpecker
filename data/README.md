@@ -7,3 +7,8 @@
     * `WSAP` - Paya Lebar Airport (South-east Singapore)
     * `WSSL` - Seletar Airport (North Singapore)
     * `WSSS` - Changi Airport (East Singapore)
+
+* `SGS - Historical Prices and Yields - Benchmark Issues.csv`: raw data set of SGS benchmark issue for 10-Year Bond Price and Yield from 1998 to 2017
+  * data retrieved as on 20th April from [Singapore Government Securities](https://secure.sgs.gov.sg/fdanet/BenchmarkPricesAndYields.aspx)
+
+* `SGS_benchmark_1998_2017.txt`: data-ready format for `SGS - Historical Prices and Yields - Benchmark Issues.csv`
